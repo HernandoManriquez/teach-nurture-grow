@@ -103,7 +103,7 @@ const Dashboard = () => {
           <h1 className="text-2xl font-semibold mb-2">Welcome back, {user?.name || 'User'}!</h1>
           <p className="text-muted-foreground">
             {isInstructor() 
-              ? 'Manage your courses, create new content, or check on your students' progress.'
+              ? 'Manage your courses, create new content, or check on your students&apos; progress.'
               : 'Continue learning where you left off or explore new courses.'}
           </p>
         </section>
