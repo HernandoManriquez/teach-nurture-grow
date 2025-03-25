@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import AuthForm from '@/components/auth/AuthForm';
 import { useAuth } from '@/context/AuthContext';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Register = () => {
   const { user } = useAuth();
@@ -20,6 +21,7 @@ const Register = () => {
       <header className="w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
           <Link to="/" className="font-semibold text-xl">Educate</Link>
+          <ThemeToggle />
         </div>
       </header>
 
