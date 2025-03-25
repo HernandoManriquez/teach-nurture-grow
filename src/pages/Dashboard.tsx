@@ -125,7 +125,7 @@ const Dashboard = () => {
             </div>
           ) : (
             <div className="text-center py-12 glass-card rounded-lg">
-              <p className="text-muted-foreground mb-4">You haven't enrolled in any courses yet.</p>
+              <p className="text-muted-foreground mb-4">You haven&apos;t enrolled in any courses yet.</p>
               <Button onClick={() => navigate('/explore')}>Explore Courses</Button>
             </div>
           )}
