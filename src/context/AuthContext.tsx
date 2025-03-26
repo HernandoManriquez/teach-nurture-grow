@@ -8,15 +8,17 @@ type User = {
   email: string;
   name: string;
   role: 'student' | 'instructor' | 'admin';
+  isChild?: boolean;
 };
 
 type AuthContextType = {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string, role?: string, isChild?: boolean) => Promise<void>;
   logout: () => void;
   isInstructor: () => boolean;
+  isAdmin: () => boolean;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -58,7 +60,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: '1',
         email,
         name: email.split('@')[0],
-        role: email.includes('instructor') ? 'instructor' : 'student',
+        role: email.includes('admin') ? 'admin' : email.includes('instructor') ? 'instructor' : 'student',
+        isChild: email.includes('child'),
       };
       
       setUser(mockUser);
@@ -73,7 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (name: string, email: string, password: string, role: string = 'student', isChild: boolean = false) => {
     try {
       setLoading(true);
       // This is a mock implementation
@@ -87,16 +90,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: Math.random().toString(36).slice(2, 9),
         email,
         name,
-        role: 'student',
+        role: role as 'student' | 'instructor' | 'admin',
+        isChild,
       };
       
-      setUser(mockUser);
-      localStorage.setItem('educate_user', JSON.stringify(mockUser));
-      toast.success('Account created successfully');
-      navigate('/dashboard');
+      // Only set the user if it's a self-registration (admin creating users shouldn't log in as that user)
+      if (role === 'student' && !user?.role) {
+        setUser(mockUser);
+        localStorage.setItem('educate_user', JSON.stringify(mockUser));
+        toast.success('Account created successfully');
+        navigate('/dashboard');
+      }
+      
+      return mockUser;
     } catch (error) {
       console.error('Registration error:', error);
       toast.error('Failed to create account. Please try again.');
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -112,9 +122,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isInstructor = () => {
     return user?.role === 'instructor' || user?.role === 'admin';
   };
+  
+  const isAdmin = () => {
+    return user?.role === 'admin';
+  };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, isInstructor }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      loading, 
+      login, 
+      register, 
+      logout, 
+      isInstructor,
+      isAdmin
+    }}>
       {children}
     </AuthContext.Provider>
   );

@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import AuthForm from '@/components/auth/AuthForm';
 import { useAuth } from '@/context/AuthContext';
-import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Login = () => {
@@ -31,17 +30,14 @@ const Login = () => {
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold">Welcome Back</h1>
-            <p className="text-muted-foreground mt-2">Sign in to continue to your account</p>
+            <p className="text-muted-foreground mt-2">Sign in to your account to continue</p>
           </div>
 
           <AuthForm type="login" />
 
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
-              Don't have an account?{' '}
-              <Link to="/register" className="text-primary hover:underline">
-                Create one
-              </Link>
+              Don&apos;t have an access? Please contact your administrator.
             </p>
           </div>
         </div>

@@ -83,6 +83,48 @@
     --sidebar-border: 217.2 32.6% 17.5%;
     --sidebar-ring: 212.7 26.8% 83.9%;
   }
+
+  .child {
+    /* Bright, playful colors for the child theme */
+    --background: 60 70% 95%;  /* Light yellow background */
+    --foreground: 280 70% 35%; /* Purple text */
+
+    --card: 180 70% 95%;       /* Light teal cards */
+    --card-foreground: 280 70% 35%;
+
+    --popover: 180 70% 95%;
+    --popover-foreground: 280 70% 35%;
+
+    --primary: 320 90% 60%;    /* Bright pink primary */
+    --primary-foreground: 60 100% 97%;
+
+    --secondary: 150 60% 70%;  /* Mint green secondary */
+    --secondary-foreground: 220 70% 30%;
+
+    --muted: 60 30% 92%;
+    --muted-foreground: 280 30% 50%;
+
+    --accent: 40 90% 60%;      /* Orange accent */
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 90% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 150 30% 80%;
+    --input: 150 30% 80%;
+    --ring: 320 90% 60%;
+
+    --radius: 1.5rem;          /* Rounded corners for child theme */
+
+    --sidebar-background: 180 70% 95%;
+    --sidebar-foreground: 280 70% 35%;
+    --sidebar-primary: 320 90% 60%;
+    --sidebar-primary-foreground: 60 100% 97%;
+    --sidebar-accent: 150 60% 70%;
+    --sidebar-accent-foreground: 220 70% 30%;
+    --sidebar-border: 150 30% 80%;
+    --sidebar-ring: 320 90% 60%;
+  }
 }
 
 @layer base {
@@ -101,6 +143,10 @@
     @apply bg-white/80 dark:bg-black/40 backdrop-blur-sm border border-white/20 dark:border-white/10 shadow-lg;
   }
   
+  .child .glass-card {
+    @apply bg-card/90 backdrop-blur-sm border-2 border-primary/30 shadow-xl;
+  }
+  
   .page-transition {
     @apply animate-fade-in;
   }
@@ -111,6 +157,36 @@
   
   .text-balance {
     text-wrap: balance;
+  }
+  
+  /* Child theme specific styles */
+  .child h1, 
+  .child h2, 
+  .child h3 {
+    @apply font-bold text-primary;
+  }
+  
+  .child button {
+    @apply rounded-full shadow-md transition-all duration-300 hover:shadow-lg hover:scale-105;
+  }
+  
+  .child input, 
+  .child select {
+    @apply rounded-xl border-2 border-secondary/50;
+  }
+}
+
+/* Custom animations for child theme */
+.child .animated-element {
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 
@@ -133,6 +209,16 @@
   background: hsl(var(--muted-foreground) / 0.5);
 }
 
+/* Child theme scrollbar */
+.child::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.6);
+  border-radius: 10px;
+}
+
+.child::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.8);
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
@@ -141,4 +227,12 @@ html {
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
   @apply font-medium tracking-tight text-balance;
+}
+
+/* Child theme typography */
+.child h1, 
+.child h2, 
+.child h3 {
+  @apply font-bold;
+  letter-spacing: 0.5px;
 }

@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 
 type AuthFormProps = {
-  type: 'login' | 'register';
+  type: 'login';
 };
 
 const loginSchema = z.object({
@@ -24,33 +24,21 @@ const loginSchema = z.object({
   password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
 });
 
-const registerSchema = loginSchema.extend({
-  name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
-
 const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
-  const { login, register: registerUser, loading } = useAuth();
+  const { login, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
-  const form = useForm<z.infer<typeof registerSchema>>({
-    resolver: zodResolver(type === 'login' ? loginSchema : registerSchema),
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      name: '',
       email: '',
       password: '',
-      confirmPassword: '',
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof registerSchema>) => {
+  const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     if (type === 'login') {
       await login(values.email, values.password);
-    } else {
-      await registerUser(values.name, values.email, values.password);
     }
   };
 
@@ -62,22 +50,6 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          {type === 'register' && (
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Full Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
-          
           <FormField
             control={form.control}
             name="email"
@@ -110,26 +82,6 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
             )}
           />
           
-          {type === 'register' && (
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <FormControl>
-                    <Input 
-                      type={showPassword ? "text" : "password"} 
-                      placeholder="Confirm your password" 
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
-          
           <div className="flex items-center gap-2 mt-2">
             <input
               type="checkbox"
@@ -149,9 +101,14 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
             disabled={loading}
           >
             {loading 
-              ? (type === 'login' ? 'Signing in...' : 'Creating account...') 
-              : (type === 'login' ? 'Sign In' : 'Create Account')}
+              ? 'Signing in...'
+              : 'Sign In'}
           </Button>
+          
+          {/* Hint for testing */}
+          <p className="text-xs text-center text-muted-foreground mt-4">
+            Hint: Use "admin@example.com" for admin access or "instructor@example.com" for instructor role
+          </p>
         </form>
       </Form>
     </div>
