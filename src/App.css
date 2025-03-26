@@ -26,6 +26,12 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+/* Tema infantil - efectos especiales para el logo */
+.child .logo:hover {
+  filter: drop-shadow(0 0 2em hsl(var(--primary)));
+  transform: scale(1.1) rotate(5deg);
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -51,6 +57,25 @@
   }
 }
 
+/* Tema infantil - tarjetas más divertidas */
+.child .card {
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.child .card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+}
+
 .read-the-docs {
   color: #888;
+}
+
+/* Tema infantil - texto más legible para niños */
+.child .read-the-docs {
+  color: hsl(var(--foreground));
+  font-size: 1.1em;
+  font-weight: 500;
 }
